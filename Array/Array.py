@@ -34,6 +34,13 @@ class Array:
     def _update_data(self, data):
         self.__data__ = data
 
+    @staticmethod
+    def _index_type_checker(idx):
+        if isinstance(idx,type(1)):
+            return idx
+        else:
+            print(idx, " is not allowed. may not be work properly.")
+
     def is_empty(self):
         if self._size < 1:
             return True
@@ -66,6 +73,7 @@ class Array:
             self._update_size()
             print("start from scratch!")
             return 1
+        idx = self._index_type_checker(idx)
         a = self._get_data()
         # case 1. Head
         if idx == 0:
@@ -126,6 +134,7 @@ class Array:
         :return: None
         """
         if self.is_empty() : raise ValueError("EMPTY!!!!!")
+        idx = self._index_type_checker(idx)
         if idx == 0:
             a = [self.__data__[i] for i in range(1,self._size)]
             self._update_data(a)
@@ -165,6 +174,7 @@ class Array:
         elif (0 > idx) or (idx >= self._size):
             raise IndexError("Invalid index. input index : %d, size of array: %d." %(idx, self._size))
         else:
+            idx = self._index_type_checker(idx)
             a = self._get_data()
             a[idx] = data
             self._update_data(a)
