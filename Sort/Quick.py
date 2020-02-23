@@ -1,5 +1,4 @@
 
-
 class Quick:
     """
     Quick Sort
@@ -21,12 +20,12 @@ class Quick:
         while True:
             while self._data[left] < self._data[pivot]:
                 left += 1
-            while self._data[right] > self._data[pivot] and right > 0:
+            while self._data[right] >= self._data[pivot] and right > 0:
                 right -= 1
             if left >= right:
                 break
-            elif self._data[left] == self._data[right]:
-                break
+            # elif self._data[left] == self._data[right]:
+            #     break
             else:
                 self._swap(left, right)
 
