@@ -31,6 +31,7 @@ class RBT(BST):
             # 삼촌이 블랙
             else:
                 self.__reconstruct__(node)
+
         # 더블레드가 아님
         else:
             pass
@@ -64,11 +65,19 @@ class RBT(BST):
             sorted_lst[1] = sorted_lst[0]
             sorted_lst[0] = tmp
 
+        for d in sorted_lst:
+            print("ㅇㅇ : ", d.get_data())
+
         # sorted_lst = [민, 중간, 맥스]
         # 중간이 부모가되고 나머지는 새끼가 됨
         if gp == self.__root__:
+            print("grandpa : ", gp.get_data())
             self.__reconnect_node__(parent=sorted_lst[1], left_child=sorted_lst[0])
             self.__reconnect_node__(parent=sorted_lst[1], right_child=sorted_lst[2])
+
+            self.pre_order_traversal()
+            for d in self.__traverse_list__:
+                print((d.get_data(), d.get_color()))
 
             sorted_lst[1].set_parent(None)
             self.__root__ = sorted_lst[1]
@@ -114,17 +123,31 @@ class RBT(BST):
     @staticmethod
     def __reconnect_node__(parent, left_child=None, right_child=None):
         if isinstance(parent, Node) and isinstance(left_child, Node):
+            parent_old_left = parent.get_left()
             parent.change_left(left_child)
             left_child.set_parent(parent)
             if left_child.get_right() == parent:
-                left_child.change_right(None)
+                left_child.change_right(parent_old_left)
+                if parent_old_left is not None:
+                    parent_old_left.set_parent(left_child)
+            if parent.get_grand_parent() == left_child:
+                left_child.change_right(parent_old_left)
+                if parent_old_left is not None:
+                    parent_old_left.set_parent(left_child)
             print("부모와 왼쪽노드 연결 완료")
 
         elif isinstance(parent, Node) and isinstance(right_child, Node):
+            parent_old_right = parent.get_right()
             parent.change_right(right_child)
             right_child.set_parent(parent)
             if right_child.get_left() == parent:
-                right_child.change_left(None)
+                right_child.change_left(parent_old_right)
+                if parent_old_right is not None:
+                    parent_old_right.set_parent(right_child)
+            if parent.get_grand_parent() == right_child:
+                right_child.change_left(parent_old_right)
+                if parent_old_right is not None:
+                    parent_old_right.set_parent(right_child)
             print("부모와 오른쪽노드 연결 완료")
 
         else:
